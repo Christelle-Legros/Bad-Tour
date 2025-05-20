@@ -8,37 +8,37 @@ const Navbar = () => {
         <img src={logoapp} alt="Logo de l'application" className="w-44 p-5" />
       </Link>
 
-      <ul className="bg-non-photo-blue text-gunmetal w-min text-sm font-bold absolute top-0 right-0 p-1">
+      <div className=" text-gunmetal w-3/5 text-sm font-bold p-1 flex justify-between absolute top-0 right-1">
         <Link to="/">
-          <li className="border-b-2 hover:bg-lavender-blush pt-2 pb-2">
+          <div className="border-b-4 border-non-photo-blue hover:bg-non-photo-blue p-2">
             Accueil
-          </li>
+          </div>
         </Link>
 
         <Link to="/players">
-          <li className="border-b-2 hover:bg-lavender-blush pt-2 pb-2">
+          <div className="border-b-4 border-non-photo-blue hover:bg-non-photo-blue p-2">
             Joueurs
-          </li>
+          </div>
         </Link>
 
         <Link to="/matchs">
-          <li className="border-b-2 hover:bg-lavender-blush pt-2 pb-2">
+          <div className="border-b-4 border-non-photo-blue hover:bg-non-photo-blue p-2">
             Matchs
-          </li>
+          </div>
         </Link>
 
         <Link to="/stats">
-          <li className="border-b-2 hover:bg-lavender-blush pt-2 pb-2">
+          <div className="border-b-4 border-non-photo-blue hover:bg-non-photo-blue p-2">
             Stats
-          </li>
+          </div>
         </Link>
 
         <Link to="/contact">
-          <li className="border-b-2 hover:bg-lavender-blush pt-2 pb-2">
+          <div className="border-b-4 border-non-photo-blue hover:bg-non-photo-blue p-2">
             Contact
-          </li>
+          </div>
         </Link>
-      </ul>
+      </div>
     </div>
   );
 };

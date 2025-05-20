@@ -1,4 +1,6 @@
 import { React, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 const Joueurs = () => {
   const [players, setPlayers] = useState([]);
@@ -19,15 +21,19 @@ const Joueurs = () => {
     const res = await fetch("http://localhost:5000/api/players", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, department, category }),
+      body: JSON.stringify({ name, department, category, genre }),
     });
     const newPlayer = await res.json();
     setPlayers([...players, newPlayer]);
     setName("");
     setDepartment("");
     setCategory([]);
+    toast.success("Joueur bien ajouté !", {
+      theme: "colored",
+    });
     console.log(department);
     console.log(category);
+    console.log(genre);
   };
 
   // Mettre à jour le tableau des catégories à chaque fois qu'elles sont cochées
@@ -161,10 +167,10 @@ const Joueurs = () => {
             <tbody>
               {players.map((p) => (
                 <tr key={p.id}>
-                  <td className="border-b-2 border-non-photo-blue">{p.name}</td>{" "}
+                  <td className="border-b-2 border-non-photo-blue">{p.name}</td>
                   <td className="border-b-2 border-non-photo-blue">
                     {p.department}
-                  </td>{" "}
+                  </td>
                   <td className="border-b-2 border-non-photo-blue">
                     {p.category.join(" / ")}
                   </td>
@@ -172,6 +178,34 @@ const Joueurs = () => {
               ))}
             </tbody>
           </table>
+        </div>
+      </div>
+
+      <div className="flex flex-col">
+        <h2>Constitution des paires</h2>
+        <p className="font-morning text-xl">
+          Cliquer sur chacun des 3 boutons pour constituer les paires et
+          visualiser les listes d'équipes.
+        </p>
+
+        {/* div qui englobe les 3 boutons de renvoi vers d'autres pages */}
+        <div className="flex">
+          <Link to="/doublemx">
+            <div className="text-lavender-blush bg-gunmetal hover:bg-gray text-sm font-medium rounded-lg px-4 py-1.5 mt-4 mb-8 w- ml-4">
+              Doubles Mixte
+            </div>
+          </Link>
+          <Link to="/doublehom">
+            <div className="text-lavender-blush bg-gunmetal hover:bg-gray text-sm font-medium rounded-lg px-4 py-1.5 mt-4 mb-8 w- ml-4">
+              Doubles Hommes
+            </div>
+          </Link>
+
+          <Link to="/doubledames">
+            <div className="text-lavender-blush bg-gunmetal hover:bg-gray text-sm font-medium rounded-lg px-4 py-1.5 mt-4 mb-8 w- ml-4">
+              Doubles Dames
+            </div>
+          </Link>
         </div>
       </div>
     </div>

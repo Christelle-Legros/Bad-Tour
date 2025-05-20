@@ -2,24 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Ta règle font-face peut aussi aller ici */
 @font-face {
   font-family: "Morning Routine";
   src: url("../src/assets/fonts/morningRoutine.otf") format("truetype");
   font-weight: normal;
   font-style: normal;
-}
-
-body {
-  margin: 0;
-  @apply font-sans;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
 }
 
 @layer base {
@@ -31,5 +18,11 @@ code {
 @layer base {
   h2 {
     @apply font-morning text-3xl m-4;
+  }
+}
+
+@layer base {
+  button {
+    @apply text-lavender-blush bg-chili-red hover:bg-red-300 hover:text-gunmetal text-sm font-medium rounded-lg px-4 py-1.5 mt-4 mb-8;
   }
 }

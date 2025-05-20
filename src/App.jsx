@@ -5,6 +5,10 @@ import Matchs from "./pages/Matchs";
 import Stats from "./pages/Stats";
 import Contact from "./pages/Contact";
 import Navbar from "./components/Navbar";
+import DoubleMixte from "./components/DoubleMixte";
+import DoubleHommes from "./components/DoubleHommes";
+import DoubleDames from "./components/DoubleDames";
+import { ToastContainer, toast } from "react-toastify";
 
 function App() {
   return (
@@ -19,8 +23,12 @@ function App() {
           <Route path="/matchs" element={<Matchs />} />
           <Route path="/stats" element={<Stats />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/doublemx" element={<DoubleMixte />} />
+          <Route path="/doublehom" element={<DoubleHommes />} />
+          <Route path="/doubledames" element={<DoubleDames />} />
         </Routes>
       </BrowserRouter>
+      <ToastContainer />
     </div>
   );
 }
