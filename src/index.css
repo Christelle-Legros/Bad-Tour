@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body,
+#root {
+  @apply min-h-screen m-0 p-0;
+}
+
 @font-face {
   font-family: "Morning Routine";
   src: url("../src/assets/fonts/morningRoutine.otf") format("truetype");
@@ -11,18 +17,18 @@
 
 @layer base {
   h1 {
-    @apply font-morning text-6xl text-center mb-[10px];
+    @apply font-morning text-7xl text-center mb-[10px];
   }
 }
 
 @layer base {
   h2 {
-    @apply font-morning text-3xl m-4;
+    @apply font-morning text-4xl m-4 text-chili-red;
   }
 }
 
 @layer base {
   button {
-    @apply text-lavender-blush bg-chili-red hover:bg-red-300 hover:text-gunmetal text-sm font-medium rounded-lg px-4 py-1.5 mt-4 mb-8;
+    @apply text-lavender-blush bg-chili-red hover:bg-red-300 hover:text-gunmetal hover:border-chili-red text-sm font-medium rounded-lg px-4 py-1.5 mt-4 mb-8;
   }
 }

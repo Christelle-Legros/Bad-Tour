@@ -10,23 +10,48 @@ const DoubleMixte = () => {
   const [assignedPlayerIds, setAssignedPlayerIds] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/players")
-      .then((res) => res.json())
-      .then(setPlayers);
+    // Étape 1 : charger les paires, récupérer les IDs, puis charger les joueurs
+    const chargerDonnees = async () => {
+      try {
+        const pairesRes = await fetch(
+          "http://localhost:5000/api/paires-mixtes"
+        );
+        const pairesData = await pairesRes.json();
+
+        setPairesMixedList(pairesData);
+        const ids = pairesData.flatMap((paire) => [
+          paire.woman_id,
+          paire.man_id,
+        ]);
+        setAssignedPlayerIds(ids);
+
+        const playersRes = await fetch(
+          "http://localhost:5000/api/players/disponibles?categorie=Double Mixte"
+        );
+        const playersData = await playersRes.json();
+        setPlayers(playersData);
+      } catch (err) {
+        console.error("Erreur lors du chargement des données :", err);
+      }
+    };
+
+    chargerDonnees();
   }, []);
 
+  const assignedSet = new Set(assignedPlayerIds);
+
   const womenMixed = players.filter(
-    (player) =>
-      player.genre === "Femme" &&
-      player.category.includes("Double Mixte") &&
-      !assignedPlayerIds.includes(player.id)
+    (p) =>
+      p.genre === "Femme" &&
+      p.category.includes("Double Mixte") &&
+      !assignedSet.has(p.id)
   );
 
   const menMixed = players.filter(
-    (player) =>
-      player.genre === "Homme" &&
-      player.category.includes("Double Mixte") &&
-      !assignedPlayerIds.includes(player.id)
+    (p) =>
+      p.genre === "Homme" &&
+      p.category.includes("Double Mixte") &&
+      !assignedSet.has(p.id)
   );
 
   //   ajout des paires constituées dans le tableau des paires
@@ -71,16 +96,6 @@ const DoubleMixte = () => {
     }
   };
 
-  useEffect(() => {
-    fetch("http://localhost:5000/api/paires-mixtes")
-      .then((res) => res.json())
-      .then((data) => {
-        setPairesMixedList(data);
-        const ids = data.flatMap((paire) => [paire.woman_id, paire.man_id]);
-        setAssignedPlayerIds(ids);
-      });
-  }, []);
-
   return (
     <div>
       <h1>Double Mixte</h1>
@@ -93,7 +108,7 @@ const DoubleMixte = () => {
           <table className="columns-3">
             <thead>
               <tr>
-                <th>Joueuse</th>
+                <th className="text-left">Joueuse</th>
                 <th>Département</th>
                 <th>Catégorie (s)</th>
               </tr>
@@ -101,13 +116,16 @@ const DoubleMixte = () => {
             <tbody>
               {womenMixed.map((p) => (
                 <tr key={p.id}>
-                  <td className="border-b-2 border-non-photo-blue">{p.name}</td>
-                  <td className="border-b-2 border-non-photo-blue">
+                  <td className="border-b-2 border-electric-blue pr-8">
+                    {p.name}
+                  </td>
+                  <td className="border-b-2 border-electric-blue">
                     {p.department}
                   </td>
-                  <td className="border-b-2 border-non-photo-blue">
+                  <td className="border-b-2 border-electric-blue">
                     {p.category.join(" / ")}
-                  </td>{" "}
+                  </td>
+
                   <input
                     type="radio"
                     name="woman"
@@ -115,6 +133,7 @@ const DoubleMixte = () => {
                     onChange={() =>
                       setPaireAConstituer((prev) => ({ ...prev, woman: p }))
                     }
+                    className="appearance-none w-6 h-6 border-2 ml-4 mt-1 border-gunmetal rounded-sm checked:bg-chili-red hover:bg-red-300"
                   />
                 </tr>
               ))}
@@ -128,7 +147,8 @@ const DoubleMixte = () => {
           <table className="columns-3">
             <thead>
               <tr>
-                <th>Joueur</th>
+                <th></th>
+                <th className="text-left">Joueur</th>
                 <th>Département</th>
                 <th>Catégorie (s)</th>
               </tr>
@@ -136,13 +156,6 @@ const DoubleMixte = () => {
             <tbody>
               {menMixed.map((p) => (
                 <tr key={p.id}>
-                  <td className="border-b-2 border-non-photo-blue">{p.name}</td>
-                  <td className="border-b-2 border-non-photo-blue">
-                    {p.department}
-                  </td>
-                  <td className="border-b-2 border-non-photo-blue">
-                    {p.category.join(" / ")}
-                  </td>
                   <input
                     type="radio"
                     name="man"
@@ -150,7 +163,17 @@ const DoubleMixte = () => {
                     onChange={() =>
                       setPaireAConstituer((prev) => ({ ...prev, man: p }))
                     }
+                    className="appearance-none w-6 h-6 border-2 mr-4 mt-1 border-gunmetal rounded-sm checked:bg-chili-red hover:bg-red-300"
                   />
+                  <td className="border-b-2 border-electric-blue pr-8">
+                    {p.name}
+                  </td>
+                  <td className="border-b-2 border-electric-blue">
+                    {p.department}
+                  </td>
+                  <td className="border-b-2 border-electric-blue">
+                    {p.category.join(" / ")}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -158,40 +181,46 @@ const DoubleMixte = () => {
         </div>
         {/* zone où se retrouvent les 2 joueurs à coupler */}
       </div>
-      <div className="pt-4 pl-4 pr-4 mt-20 ml-8 w-60 bg-gunmetal text-non-photo-blue font-medium rounded-lg">
-        <h3 className="font-morning text-3xl mb-4">Joueurs sélectionnés :</h3>
-        <div>
-          <p className="flex">
-            <p className="text-yellow-400 pr-2">
-              <i class="fa-solid fa-venus"></i>
-            </p>
-            {paireAConstituer.woman?.name || "Aucune sélectionnée"}
-          </p>
 
-          <p className="flex">
-            <p className="text-yellow-400 pr-2">
-              <i class="fa-solid fa-mars"></i>
+      <div className="flex justify-around">
+        <div className="pt-4 pl-4 pr-4 mt-20 ml-8 w-60 bg-gunmetal text-electric-blue font-medium rounded-lg">
+          <h3 className="font-morning text-3xl mb-4">Joueurs sélectionnés :</h3>
+          <div>
+            <p className="flex">
+              <p className="text-yellow-400 pr-2">
+                <i class="fa-solid fa-venus"></i>
+              </p>
+              {paireAConstituer.woman?.name || "Aucune sélectionnée"}
             </p>
-            {paireAConstituer.man?.name || "Aucun sélectionné"}
-          </p>
+
+            <p className="flex">
+              <p className="text-yellow-400 pr-2">
+                <i class="fa-solid fa-mars"></i>
+              </p>
+              {paireAConstituer.man?.name || "Aucun sélectionné"}
+            </p>
+          </div>
+          <button onClick={addMixedPaire} className="mt-8">
+            Paire OK
+          </button>
         </div>
-        <button onClick={addMixedPaire} className="mt-8">
-          Paire OK
-        </button>
+
+        <div className="mt-20 bg-electric-blue w-1/3 rounded-lg">
+          <h2 className="text-center">Liste des Paires en double mixte :</h2>
+          <ul className="pl-2">
+            {pairesMixedList.map((p) => (
+              <li key={p.id}>
+                {p.id}- {p.woman_name} ({p.woman_department}) | {p.man_name} (
+                {p.man_department})
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
-      <div>
-        <h2>Liste des Paires en double mixte :</h2>
-        <ul>
-          {pairesMixedList.map((p) => (
-            <li key={p.id}>
-              {p.woman_name} ({p.woman_department}) | {p.man_name} (
-              {p.man_department})
-            </li>
-          ))}
-        </ul>
-      </div>
-
+      <button className="ml-4 mt-16">
+        Retour vers la page de tous les Joueurs
+      </button>
       <div>
         Est-ce qu'on mettrait pas un petit module avec sélection aléatoire des
         équipes ?

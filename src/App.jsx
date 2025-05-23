@@ -12,7 +12,7 @@ import { ToastContainer, toast } from "react-toastify";
 
 function App() {
   return (
-    <div className="bg-lavender-blush h-screen w-screen">
+    <div className="min-h-screen bg-lavender-blush h-full w-full">
       {/* Tout encapsuler dans BrowserRouter, pour que toute l'App ait accès à Routes, Link... */}
       <BrowserRouter>
         <Navbar />

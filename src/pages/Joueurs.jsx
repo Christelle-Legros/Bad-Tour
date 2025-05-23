@@ -167,11 +167,11 @@ const Joueurs = () => {
             <tbody>
               {players.map((p) => (
                 <tr key={p.id}>
-                  <td className="border-b-2 border-non-photo-blue">{p.name}</td>
-                  <td className="border-b-2 border-non-photo-blue">
+                  <td className="border-b-2 border-electric-blue">{p.name}</td>
+                  <td className="border-b-2 border-electric-blue">
                     {p.department}
                   </td>
-                  <td className="border-b-2 border-non-photo-blue">
+                  <td className="border-b-2 border-electric-blue">
                     {p.category.join(" / ")}
                   </td>
                 </tr>
@@ -181,15 +181,15 @@ const Joueurs = () => {
         </div>
       </div>
 
-      <div className="flex flex-col">
+      <div className="flex flex-col w-1/2">
         <h2>Constitution des paires</h2>
-        <p className="font-morning text-xl">
+        <div className="font-morning text-2xl ml-4">
           Cliquer sur chacun des 3 boutons pour constituer les paires et
           visualiser les listes d'équipes.
-        </p>
+        </div>
 
         {/* div qui englobe les 3 boutons de renvoi vers d'autres pages */}
-        <div className="flex">
+        <div className="flex justify-center">
           <Link to="/doublemx">
             <div className="text-lavender-blush bg-gunmetal hover:bg-gray text-sm font-medium rounded-lg px-4 py-1.5 mt-4 mb-8 w- ml-4">
               Doubles Mixte
